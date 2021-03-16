@@ -1,29 +1,30 @@
 let video;
 
-let tolerance = 5;
+let tolerance = 15;
 let colorToMatch;
 
 let flow;
 let previousPixels;
 let fgridSize = 24;
 let ignoreThresh = 12;
+let movementX, movementY;
 
 function setup() {
-  createCanvas(640,480);
+  createCanvas(1280,720);
 
   video = createCapture(VIDEO);
-  video.size(640,480);
+  video.size(1280,720);
   video.hide();
   flow = new FlowCalculator(fgridSize);
 
-  colorToMatch = color(255,0,0);
+  colorToMatch = color(121,112,47);
 }
 
 function draw() {
   //background(255);
   //circleMatrix();
-  //colorTracking();
-  opticalFlow();
+  colorTracking();
+  //opticalFlow();
   //blobTrack();
 
 }
@@ -53,6 +54,8 @@ function colorTracking(){
     stroke(255);
     strokeWeight(2);
     circle(firstPx.x,firstPx.y,30);
+  }else{
+    print("colorToMatch undefined");
   }
 
 }
@@ -60,10 +63,11 @@ function colorTracking(){
 function mousePressed(){
   loadPixels();
   colorToMatch = get(mouseX,mouseY);
+  print(colorToMatch);
+  //rbg(121,112,47) is the yellow
 }
 
 function findColor(input, c, t) {
-
   if(input.width === 0 || input.height === 0){
     return undefined;
   }
