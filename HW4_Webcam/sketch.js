@@ -1,6 +1,7 @@
 let video;
 
 let tolerance = 15;
+let redTolerance = 18;
 let colorToMatch;
 
 let flow;
@@ -8,16 +9,26 @@ let previousPixels;
 let fgridSize = 24;
 let ignoreThresh = 12;
 let movementX, movementY;
+let xPos;
+let yPos;
+let mouseDraggedBool;
+let xLabel, yLabel, draggedLabel;
 
 function setup() {
   createCanvas(1280,720);
-
+  textAlign(LEFT);
   video = createCapture(VIDEO);
   video.size(1280,720);
   video.hide();
   flow = new FlowCalculator(fgridSize);
-
-  colorToMatch = color(121,112,47);
+  xPos = 0;
+  yPos = 0;
+  mouseDraggedBool = "Mouse held?: False";
+  xLabel = new TextObject(xPos,20,30,255);
+  yLabel = new TextObject(yPos,20,60,255);
+  draggedLabel = new TextObject(mouseDraggedBool,20,90,255);
+  draggedLabel.display();
+  colorToMatch = [62,105,130,255];
 }
 
 function draw() {
@@ -49,20 +60,38 @@ function circleMatrix(){
 function colorTracking(){
   image(video,0,0);
   let firstPx = findColor(video, colorToMatch, tolerance);
+  draggedLabel
+  draggedLabel.display();
   if(firstPx !== undefined) {
     fill(colorToMatch);
     stroke(255);
     strokeWeight(2);
     circle(firstPx.x,firstPx.y,30);
+    xPos = firstPx.x;
+    xLabel.dispText = "Mouse X: " + xPos;
+    xLabel.display();
+    yPos = firstPx.y;
+    yLabel.dispText = "Mouse Y: " + yPos;
+    yLabel.display();
   }else{
     print("colorToMatch undefined");
   }
 
 }
 
+function mouseDragged(){
+  mouseDraggedBool = "Mouse held?: True";
+  draggedLabel.dispText = mouseDraggedBool;
+}
+
+function mouseReleased(){
+  mouseDraggedBool = "Mouse held?: False";
+  draggedLabel.dispText = mouseDraggedBool;
+}
+
 function mousePressed(){
-  loadPixels();
-  colorToMatch = get(mouseX,mouseY);
+  //loadPixels();
+  //colorToMatch = get(mouseX,mouseY);
   print(colorToMatch);
   //rbg(121,112,47) is the yellow
 }
@@ -84,13 +113,36 @@ function findColor(input, c, t) {
       let g = video.pixels[index+1];
       let b= video.pixels[index+2];
 
-      if (r >= matchR-tolerance && r <= matchR+tolerance &&
+      if (r >= matchR-redTolerance && r <= matchR+redTolerance &&
           g >= matchG-tolerance && g <= matchG+tolerance &&
           b >= matchB-tolerance && b <= matchB+tolerance) {
             return createVector(x,y);
           }
     }
   }
+}
+
+class TextObject {
+    constructor(dispText,x,y,color) {
+      this.dispText = dispText;
+      this.x = x;
+      this.y = y;
+      this.color = color;
+    }
+
+    //display text
+    display() {
+      push();
+      translate(this.x, this.y);
+      textSize(20);
+      noStroke();
+
+      //textFont(diorFont);
+      fill(this.color);
+      text(this.dispText, 0,0);
+      pop();
+    }
+
 }
 
 function opticalFlow(){
