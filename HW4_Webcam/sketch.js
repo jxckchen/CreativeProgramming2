@@ -13,22 +13,34 @@ let xPos;
 let yPos;
 let mouseDraggedBool;
 let xLabel, yLabel, draggedLabel;
+let tapsCounter, flickCounter, sprayCounter;
+
+let pg,pg2;
 
 function setup() {
   createCanvas(1280,720);
   textAlign(LEFT);
   video = createCapture(VIDEO);
-  video.size(1280,720);
+  video.size(960,540);
   video.hide();
+  pg = createGraphics(1280,720);
+  pg2 = createGraphics(1280,720);
+
   flow = new FlowCalculator(fgridSize);
   xPos = 0;
   yPos = 0;
-  mouseDraggedBool = "Mouse held?: False";
+  mouseDraggedBool = false;
   xLabel = new TextObject(xPos,20,30,255);
   yLabel = new TextObject(yPos,20,60,255);
   draggedLabel = new TextObject(mouseDraggedBool,20,90,255);
   draggedLabel.display();
   colorToMatch = [62,105,130,255];
+
+  sprayTest = new SprayPattern();
+  sprayTest2 = new SprayPattern();
+  sprayTest3 = new SprayPattern();
+
+  sprayCounter = 0;
 }
 
 function draw() {
@@ -58,9 +70,10 @@ function circleMatrix(){
 }
 
 function colorTracking(){
+  image(pg,0,0);
   image(video,0,0);
+  image(pg2,0,0);
   let firstPx = findColor(video, colorToMatch, tolerance);
-  draggedLabel
   draggedLabel.display();
   if(firstPx !== undefined) {
     fill(colorToMatch);
@@ -73,6 +86,23 @@ function colorTracking(){
     yPos = firstPx.y;
     yLabel.dispText = "Mouse Y: " + yPos;
     yLabel.display();
+
+    if (mouseDraggedBool == true){
+      pg.stroke(0);
+      pg.fill(0);
+      pg.circle(firstPx.x + 400,firstPx.y,2);
+      pg2.stroke(0);
+      pg2.fill(0);
+      pg2.circle(firstPx.x-700+sprayCounter, firstPx.y+400,2);
+      //new spray pattern Object
+      //add coordinate to array of coords
+
+
+    } else {
+      pg.background(255);
+
+
+    }
   }else{
     print("colorToMatch undefined");
   }
@@ -80,13 +110,14 @@ function colorTracking(){
 }
 
 function mouseDragged(){
-  mouseDraggedBool = "Mouse held?: True";
-  draggedLabel.dispText = mouseDraggedBool;
+  mouseDraggedBool = true;
+  draggedLabel.dispText = "Mouse held?: True";
 }
 
 function mouseReleased(){
-  mouseDraggedBool = "Mouse held?: False";
-  draggedLabel.dispText = mouseDraggedBool;
+  mouseDraggedBool = false;
+  draggedLabel.dispText = "Mouse held?: False";
+  sprayCounter+=100;
 }
 
 function mousePressed(){
@@ -120,6 +151,31 @@ function findColor(input, c, t) {
           }
     }
   }
+}
+
+class SprayPattern {
+  constructor(){
+    this.coords = [];
+  }
+
+  display(x,y){
+    for(let i = 0; i < this.coords.length; i++){
+      fill(0);
+      stroke(0);
+      circle(this.coords[i][0]+x,this.coords[i][1]+y,2);
+      print(this.coords[i]);
+    }
+  }
+
+  add(x){
+    this.coords.push(x);
+  }
+
+  reset(){
+    this.coords = [];
+  }
+
+
 }
 
 class TextObject {
