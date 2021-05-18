@@ -8,7 +8,7 @@ P5.js was used for the main menu and the animations. The libraries CCapture and 
 
 The menu is navigated using keyboard keys, as marked on each square. Clicking backspace returns you to the menu.
 ![screenshot](Documentation/MenuScreenshot.png)
-![programUse](Documentation/ProgramUsage_Trim.gif)
+![programUse](Documentation/ProgramDemo_Trim.gif)
 
 The background color is set to green by default for easy chroma keying in Premiere.
 ![textSC-1](Documentation/TextScreenshot-1.png)
