@@ -6,6 +6,16 @@ This project is a framework to develop animated graphics for Twitch streams. It 
 
 P5.js was used for the main menu and the animations. The libraries CCapture and FFMPEG are used to record frames and export them, which would then be edited and chroma keyed in Premiere and exported as a WebM. WebM is a video format that supports transparent backgrounds, perfect for stream overlays.
 
+The menu is navigated using keyboard keys, as marked on each square. Clicking backspace returns you to the menu.
 ![screenshot](Documentation/MenuScreenshot.png)
 
-![video](Documentation/ProgramDemo.mp4)
+The background color is set to green by default for easy chroma keying in Premiere.
+![textSC-1](Documentation/TextScreenshot-1.png)
+![textSC-2](Documentation/TextScreenshot-2.png)
+
+One application of this program is Stinger Transitions. Shown below is an example of a basic one:
+![gif](Documentation/TransitionDemo_Trim.gif)
+
+![Video Demo of Program Usage](Documentation/ProgramDemo.mp4)
+
+![Video Demo of Stinger Transition Usage](Documentation/TransitionDemo.mp4)
