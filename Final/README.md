@@ -1,9 +1,11 @@
-# Homework 4: Mask
-## Emotion Enhancing Glitch Mask
+# Creative Programming 2 Final Project
+## Twitch Stream Graphics Generator
 
 ## Description
-This project utilizes P5js webcam tracking and Google's TensorFlow API to track the user's face. It enlarges certain features of their face to simulate a positive emotion, to combat resting b***h faces. There is also a random glitch effect to embrace the aesthetic.
+This project is a framework to develop animated graphics for Twitch streams. It was designed for myself as a way to organize and save different text animations, stinger transitions, and other graphics a client may request.
 
-![screenshot](mask-sc.png)
+P5.js was used for the main menu and the animations. The libraries CCapture and FFMPEG are used to record frames and export them, which would then be edited and chroma keyed in Premiere and exported as a WebM. WebM is a video format that supports transparent backgrounds, perfect for stream overlays.
 
-![video](2021.03.31-22.28_Trim.mp4)
+![screenshot](Documentation/MenuScreenshot.png)
+
+![video](Documentation/ProgramDemo.mp4)
